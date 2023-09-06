@@ -7,9 +7,12 @@ workflows:
       - flutter packages pub get
       - name: Decode Env
         script:
+#         Decode environment variable and save into env.json
           echo $ENVIRONMENT_FILE | base64 --decode > env.json
+
       - name: Build APK with Flutter
         script: |
+#         Build new apk using decoded environment file
           flutter build apk --release \
             --dart-define-from-file=env.json
     artifacts:
