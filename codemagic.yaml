@@ -1,16 +1,18 @@
 workflows:
   build-android:
+    environment:
+      groups:
+        - Mobile
     name: Android Build
     instance_type: mac_mini_m1
     max_build_duration: 120
     scripts:
-      - flutter packages pub get
       - name: Decode Env
         script: |
           echo $ENVIRONMENT_FILE | base64 --decode > env.json
-          cat env.json
       - name: Build APK with Flutter
         script: |
+          flutter packages pub get
           flutter build apk --release --dart-define-from-file=env.json
     artifacts:
       - build/**/outputs/**/*.apk
